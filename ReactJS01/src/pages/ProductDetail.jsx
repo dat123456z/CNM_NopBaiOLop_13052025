@@ -3,7 +3,7 @@ import { ShoppingCartOutlined, HeartOutlined, MinusOutlined, PlusOutlined } from
 import { Card, Button, InputNumber, Tabs, Image, Rate, Badge, Table } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -84,8 +84,16 @@ const ProductCard = ({ product, onViewDetail }) => {
 
 const ProductDetail = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [quantity, setQuantity] = useState(1);
     const [liked, setLiked] = useState(false);
+
+    // Tăng lượt xem mỗi khi vào trang chi tiết
+    useEffect(() => {
+        if (id) {
+            incrementViewApi(id).catch(console.error);
+        }
+    }, [id]);
 
     const product = {
         id: 1,

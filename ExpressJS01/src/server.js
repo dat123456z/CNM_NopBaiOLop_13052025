@@ -4,6 +4,7 @@ const configViewEngine = require('./config/viewEngine');
 const apiRoutes = require('./routes/api');
 const connection = require('./config/database');
 const { getHomepage } = require('./controllers/homeController');
+const { seedProducts } = require('./services/productService');
 const cors = require('cors');
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/v1/api/', apiRoutes);
 (async () => {
     try {
         await connection();
+        await seedProducts();
 
         app.listen(port, () => {
             console.log(`Backend Nodejs App listening on port ${port}`)
@@ -31,4 +33,4 @@ app.use('/v1/api/', apiRoutes);
     } catch (error) {
         console.log(">>> Error connect to DB: ", error)
     }
-})()
+})()
