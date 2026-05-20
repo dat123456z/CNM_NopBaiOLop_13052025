@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import {
   ShoppingCartOutlined, FireOutlined, TagOutlined, HeartOutlined,
   SearchOutlined, FilterOutlined, EyeOutlined, LeftOutlined, RightOutlined,
@@ -11,6 +11,7 @@ import {
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { getProductsByCategoryApi, getBestSellersApi, getMostViewedApi } from "../util/api";
+import { CartContext } from "../components/context/cart.context";
 
 const ProductCard = ({ product, onViewDetail, rank }) => {
   const discount =
@@ -18,6 +19,15 @@ const ProductCard = ({ product, onViewDetail, rank }) => {
       ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
       : 0;
   const [imgLoaded, setImgLoaded] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const { addToCart } = useContext(CartContext);
+
+  const handleAddToCart = async (e) => {
+    e.stopPropagation();
+    setAdding(true);
+    await addToCart(product._id || product.id, 1);
+    setAdding(false);
+  };
 
   const Inner = () => (
     <Card hoverable bodyStyle={{ padding: "10px" }}
@@ -57,9 +67,10 @@ const ProductCard = ({ product, onViewDetail, rank }) => {
               {discount > 0 && <div className="text-xs text-gray-400 line-through">{product.originalPrice?.toLocaleString("vi-VN")}đ</div>}
             </div>
             <Button type="primary" block danger icon={<ShoppingCartOutlined />}
+              loading={adding}
               className="rounded-lg font-semibold text-xs h-8 border-none"
-              onClick={(e) => e.stopPropagation()}>
-              Thêm vào giỏ
+              onClick={handleAddToCart}>
+              {adding ? 'Đang thêm...' : 'Thêm vào giỏ'}
             </Button>
           </div>
         </div>

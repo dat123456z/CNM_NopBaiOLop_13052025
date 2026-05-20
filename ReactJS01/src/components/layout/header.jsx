@@ -1,31 +1,52 @@
 import React, { useContext, useState } from 'react';
-import { UsergroupAddOutlined, HomeOutlined, SettingOutlined, LogoutOutlined, LoginOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
+import {
+    UsergroupAddOutlined, HomeOutlined, SettingOutlined, LogoutOutlined,
+    LoginOutlined, ShoppingCartOutlined, OrderedListOutlined
+} from '@ant-design/icons';
+import { Menu, Badge } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/auth.context';
+import { CartContext } from '../context/cart.context';
 
 const Header = () => {
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
+    const { cartCount } = useContext(CartContext);
     const [current, setCurrent] = useState('home');
 
     const items = [
         {
-            label: <Link to="/">Home Page</Link>,
+            label: <Link to="/">Trang chủ</Link>,
             key: 'home',
             icon: <HomeOutlined />,
         },
         ...(auth?.isAuthenticated
             ? [
                 {
-                    label: <Link to="/user">Users</Link>,
+                    label: <Link to="/user">Người dùng</Link>,
                     key: 'user',
                     icon: <UsergroupAddOutlined />,
+                },
+                {
+                    label: (
+                        <Link to="/cart">
+                            <Badge count={cartCount} size="small" offset={[4, -2]}>
+                                <span style={{ paddingRight: 6 }}>Giỏ hàng</span>
+                            </Badge>
+                        </Link>
+                    ),
+                    key: 'cart',
+                    icon: <ShoppingCartOutlined />,
+                },
+                {
+                    label: <Link to="/orders">Đơn hàng</Link>,
+                    key: 'orders',
+                    icon: <OrderedListOutlined />,
                 },
             ]
             : []),
         {
-            label: auth?.isAuthenticated ? `Welcome ${auth?.user?.email ?? ''}` : 'Tài khoản',
+            label: auth?.isAuthenticated ? `Xin chào, ${auth?.user?.name || auth?.user?.email || ''}` : 'Tài khoản',
             key: 'account',
             icon: <SettingOutlined />,
             children: auth?.isAuthenticated

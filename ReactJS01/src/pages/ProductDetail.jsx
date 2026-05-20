@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ShoppingCartOutlined, HeartOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { Card, Button, InputNumber, Tabs, Image, Rate, Badge, Table } from 'antd';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { useNavigate, useParams } from 'react-router-dom';
+import { CartContext } from '../components/context/cart.context';
+import { incrementViewApi } from '../util/api';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -11,7 +13,16 @@ import 'swiper/css/pagination';
 const ProductCard = ({ product, onViewDetail }) => {
     const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
     const [imgLoaded, setImgLoaded] = useState(false);
+    const [adding, setAdding] = useState(false);
     const fallback = 'https://via.placeholder.com/420x280?text=No+Image';
+    const { addToCart } = useContext(CartContext);
+
+    const handleAddToCart = async (e) => {
+        e.stopPropagation();
+        setAdding(true);
+        await addToCart(product._id || product.id, 1);
+        setAdding(false);
+    };
 
     return (
         <div className="group h-full">
@@ -31,7 +42,7 @@ const ProductCard = ({ product, onViewDetail }) => {
                 hoverable
                 className="h-full border-none shadow-md hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden cursor-pointer"
                 bodyStyle={{ padding: '10px' }}
-                onClick={() => onViewDetail(product.id)}
+                onClick={() => onViewDetail(product._id || product.id)}
             >
                 <div className="relative flex flex-col h-full">
                     <div className="relative w-full h-32 bg-gray-100 rounded-md overflow-hidden mb-2">
@@ -68,11 +79,12 @@ const ProductCard = ({ product, onViewDetail }) => {
                                 type="primary"
                                 block
                                 danger
+                                loading={adding}
                                 icon={<ShoppingCartOutlined />}
                                 className="rounded-lg font-semibold text-xs h-8 bg-gradient-to-r from-red-500 to-orange-500 border-none hover:opacity-95"
-                                onClick={(e) => e.stopPropagation()}
+                                onClick={handleAddToCart}
                             >
-                                Thêm vào giỏ
+                                {adding ? 'Đang thêm...' : 'Thêm vào giỏ'}
                             </Button>
                         </div>
                     </div>
@@ -87,6 +99,7 @@ const ProductDetail = () => {
     const { id } = useParams();
     const [quantity, setQuantity] = useState(1);
     const [liked, setLiked] = useState(false);
+    const { addToCart } = useContext(CartContext);
 
     // Tăng lượt xem mỗi khi vào trang chi tiết
     useEffect(() => {
@@ -271,6 +284,7 @@ const ProductDetail = () => {
                                 icon={<ShoppingCartOutlined />}
                                 className="rounded-lg font-semibold h-12 bg-gradient-to-r from-red-500 to-orange-500 border-none hover:opacity-95"
                                 disabled={product.stock === 0}
+                                onClick={() => addToCart(id, quantity)}
                             >
                                 Thêm vào giỏ ({quantity})
                             </Button>
