@@ -254,7 +254,7 @@ const AllProductsSection = ({ onViewDetail }) => {
     return btns;
   };
 
-  const FilterContent = () => (
+  const filterContent = (
     <div className="space-y-6">
       <div>
         <p className="font-semibold text-gray-800 mb-3">Khoảng giá</p>
@@ -323,7 +323,7 @@ const AllProductsSection = ({ onViewDetail }) => {
         <div className="hidden lg:block">
           <div className="bg-white rounded-2xl p-5 shadow-sm sticky top-20">
             <h3 className="font-bold text-gray-900 mb-4">Bộ lọc</h3>
-            <FilterContent />
+            {filterContent}
           </div>
         </div>
 
@@ -371,7 +371,7 @@ const AllProductsSection = ({ onViewDetail }) => {
       </div>
 
       <Drawer title="Bộ lọc" onClose={() => setDrawerOpen(false)} open={drawerOpen} placement="left">
-        <FilterContent />
+        {filterContent}
       </Drawer>
     </section>
   );

@@ -76,7 +76,9 @@ const loginService = async (email1, password) => {
                     access_token,
                     user: {
                         email: user.email,
-                        name: user.name
+                        name: user.name,
+                        phone: user.phone || "",
+                        address: user.address || ""
                     }
                 };
             }
@@ -102,6 +104,27 @@ const getUserService = async () => {
     }
 }
 
+const updateUserService = async (userId, name, phone, address) => {
+    try {
+        let result = await User.findByIdAndUpdate(
+            userId,
+            { name, phone, address },
+            { new: true }
+        ).select("-password");
+        return {
+            EC: 0,
+            EM: "Cập nhật thông tin thành công",
+            data: result
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            EC: 1,
+            EM: "Lỗi Server khi cập nhật thông tin"
+        };
+    }
+}
+
 module.exports = {
-    createUserService, loginService, getUserService
+    createUserService, loginService, getUserService, updateUserService
 }

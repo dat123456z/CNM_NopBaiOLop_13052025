@@ -25,7 +25,9 @@ function App() {
             isAuthenticated: true,
             user: {
               email: res.email,
-              name: res.name
+              name: res.name,
+              phone: res.phone || "",
+              address: res.address || ""
             }
           })
         }

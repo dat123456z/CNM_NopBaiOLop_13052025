@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import RegisterPage from './pages/register.jsx';
 import UserPage from './pages/user.jsx';
+import ProfilePage from './pages/profile.jsx';
 import HomePage from './pages/home.jsx';
 import LoginPage from './pages/login.jsx';
 import ProductDetail from './pages/ProductDetail.jsx';
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "user",
         element: <UserPage />,
+      },
+      {
+        path: "profile",
+        element: <ProfilePage />,
       },
       {
         path: "products/:id",

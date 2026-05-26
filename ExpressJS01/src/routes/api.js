@@ -1,5 +1,5 @@
 const express = require('express');
-const { createUser, handleLogin, getUser, getAccount } = require('../controllers/userController');
+const { createUser, handleLogin, getUser, getAccount, updateProfile } = require('../controllers/userController');
 const { getProductsByCategory, getTopBestSellers, getTopMostViewed, incrementView } = require('../controllers/productController');
 const { getCart, addToCart, updateCartItem, removeCartItem, clearCart } = require('../controllers/cartController');
 const { createOrder, getMyOrders, getOrderDetail, cancelOrder, updateOrderStatus } = require('../controllers/orderController');
@@ -21,6 +21,7 @@ routerAPI.post("/login", handleLogin);
 // User routes
 routerAPI.get("/user", getUser);
 routerAPI.get("/account", delay, getAccount);
+routerAPI.put("/user/profile", updateProfile);
 
 // Product routes
 routerAPI.get("/products/best-sellers", getTopBestSellers);

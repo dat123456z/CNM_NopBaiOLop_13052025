@@ -12,6 +12,10 @@ const getUserApi = () => {
     return axios.get("/v1/api/user");
 }
 
+const updateProfileApi = (name, phone, address) => {
+    return axios.put("/v1/api/user/profile", { name, phone, address });
+}
+
 const getProductsByCategoryApi = (category = 'all', page = 1, limit = 8) => {
     return axios.get(`/v1/api/products?category=${category}&page=${page}&limit=${limit}`);
 }
@@ -44,7 +48,7 @@ const cancelOrderApi = (orderId, reason) => axios.patch(`/v1/api/orders/${orderI
 const updateOrderStatusApi = (orderId, status, note) => axios.patch(`/v1/api/orders/${orderId}/status`, { status, note });
 
 export {
-    createUserApi, loginApi, getUserApi,
+    createUserApi, loginApi, getUserApi, updateProfileApi,
     getProductsByCategoryApi, getBestSellersApi, getMostViewedApi, incrementViewApi,
     getCartApi, addToCartApi, updateCartItemApi, removeCartItemApi, clearCartApi,
     createOrderApi, getMyOrdersApi, getOrderDetailApi, cancelOrderApi, updateOrderStatusApi,

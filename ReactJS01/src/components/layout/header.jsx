@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import {
     UsergroupAddOutlined, HomeOutlined, SettingOutlined, LogoutOutlined,
-    LoginOutlined, ShoppingCartOutlined, OrderedListOutlined
+    LoginOutlined, ShoppingCartOutlined, OrderedListOutlined, UserOutlined
 } from '@ant-design/icons';
 import { Menu, Badge } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
@@ -51,6 +51,11 @@ const Header = () => {
             icon: <SettingOutlined />,
             children: auth?.isAuthenticated
                 ? [
+                    {
+                        label: <Link to="/profile">Thông tin cá nhân</Link>,
+                        key: 'profile',
+                        icon: <UserOutlined />,
+                    },
                     {
                         label: (
                             <span

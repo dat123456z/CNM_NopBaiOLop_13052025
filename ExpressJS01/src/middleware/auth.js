@@ -17,7 +17,7 @@ const auth = async (req, res, next) => {
                 const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
                 // Lấy thêm _id từ database theo email
-                const userInDB = await User.findOne({ email: decoded.email }).select('_id email name role');
+                const userInDB = await User.findOne({ email: decoded.email }).select('_id email name role phone address');
                 if (!userInDB) {
                     return res.status(401).json({ message: "Người dùng không tồn tại" });
                 }
@@ -27,6 +27,8 @@ const auth = async (req, res, next) => {
                     email: userInDB.email,
                     name: userInDB.name,
                     role: userInDB.role,
+                    phone: userInDB.phone || "",
+                    address: userInDB.address || "",
                 };
                 next();
             } catch (error) {

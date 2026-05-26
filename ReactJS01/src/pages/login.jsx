@@ -24,7 +24,9 @@ const LoginPage = () => {
                 isAuthenticated: true,
                 user: {
                     email: res?.user?.email ?? "",
-                    name: res?.user?.name ?? ""
+                    name: res?.user?.name ?? "",
+                    phone: res?.user?.phone ?? "",
+                    address: res?.user?.address ?? ""
                 }
             })
             navigate("/");
